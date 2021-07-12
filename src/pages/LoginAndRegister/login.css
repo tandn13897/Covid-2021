@@ -1,0 +1,124 @@
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(200deg, #d5e3fa, #dbcafc);
+  }
+  
+.login-and-Resgister {
+    position: relative;
+}
+
+.login__container {
+    width: 300px;
+    height: 480px;
+}
+
+.login__container > h3, .register__container > h3 {
+    text-align: center;
+    font-size: 40px;
+    font-family:Arial, Helvetica, sans-serif;
+    color:rgba(112, 38, 106, 0.7);
+    font-weight: bold;
+
+    padding-top: 20px;
+}
+
+.login__container > .login__avatar {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Input */
+
+label, input {
+    display: block;
+    width: 100%;
+}
+
+label {
+    margin-bottom: 5px;
+    height: 22px;
+    font-size: 18px;
+    color: rgba(4, 0, 255, 0.986);
+}
+
+input {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #777;
+}
+
+input.error {
+    border-color: red;
+}
+
+.login__btn-submit, .register__btn-submit {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 25px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    height: 50px;
+    background-color: #57b846;
+}
+
+.login__btn-submit:hover {
+    background-color: rgba(112, 38, 106, 0.7);
+    color: #57b846;
+}
+
+.login__btn-homepage {
+    text-decoration: none;
+    color: saddlebrown;
+}
+
+
+
+.register__container {
+    width: 450px;
+    height: auto;
+    margin-bottom: 10px;
+    padding-bottom: 30px;
+}
+
+.register__name, .register__password, .register__gender {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.register__name > div {
+    width: 45%;
+}
+
+.register__gender {
+    justify-content:left;
+    align-items: center;
+}
+
+.register__gender > h5 {
+    margin-bottom: 6px;
+    padding: 5px; }
+    @media screen and (max-width:768px) {
+        .register__container {
+            width: 300px;
+        }
+        .register__name, .register__password, .register__gender {
+            display: block;
+        }
+        .register__name > div {
+            width: 100%;
+        }
+    }
+

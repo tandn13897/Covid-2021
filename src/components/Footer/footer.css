@@ -1,0 +1,11 @@
+footer {
+    height: auto;
+
+    background: #dad7d7;
+    text-align: center;
+    padding: 10px 30px;
+    
+    font-size: 12px;
+    font-style: italic;
+    font-family:'Times New Roman', Times, serif;
+}

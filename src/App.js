@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
+
+import "./App.css";
+import AuthRoute from "./route/authRoute/AuthRoute";
+// import PrivateRoute from "./route/privateRoute/PrivateRoute";
+import LoginAndRegisterForm from "./pages/LoginAndRegister/index";
+import HomePage from "./pages/Home/HomePage";
+import GlobalLoading from "./components/GlobalLoading/GlobalLoading";
+
+function Notfound(props) {
+  return <div>Oppss... Not found</div>;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <GlobalLoading>
+        <BrowserRouter>
+          <Switch>
+            <AuthRoute path="/login" component={LoginAndRegisterForm} />
+            <Route path="/" component={HomePage} />
+            <Route component={Notfound} />
+          </Switch>
+        </BrowserRouter>
+      </GlobalLoading>
     </div>
   );
 }
