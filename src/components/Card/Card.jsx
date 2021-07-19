@@ -1,26 +1,38 @@
 import React from 'react'
-import { Card } from 'antd'
+import { Card, Button } from 'antd'
+import moment from 'moment'
+import './card.css'
+import '../../assests/font/font.css'
 
-const { Meta } = Card
+const headerStyle = {
+    fontSize:'20px',
+    backgroundColor:'rgb(68, 177, 35)',
+}
 
-export default function CardModel({ author, content, description, publishe, title, image}) {
+
+export default function CardModel({ author, content, description, publishe, title, image, loading}) {
     return (
-        <Card
-            hoverable
-            title={title}
-            cover={
-                <img src={image} alt='#src' height='250px'/>
-            }
-            style={{
-                width:'85%', 
-            }}
+            <Card
+                hoverable
+                title={title}
+                loading={loading}
+                headStyle={headerStyle}
+                className='card-modal'
             >
-                <Meta
-                    title={`Author: ${author}`}
-                    description={description}
-                />
-                {content}
-                <p>{publishe}</p>
-         </Card>
+                <div className='card-modal__content'>
+                    <img src={image} alt='#src'/>    
+                    <div>
+                        {description}
+                        <p>{moment(publishe).format('MMMM Do YYYY')}</p>
+                    </div>
+                </div>
+                <div className='description'>
+                    <div>
+                        <p>{content}</p>
+                        <p>By {author}</p>
+                    </div>
+                    <Button type='text' size='large'>Read more...</Button>
+                </div>
+            </Card>  
     )
 }

@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+
+.country_header {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 35px;
+    font-style: italic;
+    width: 100%;
+    text-align: center;
+}
+
+.country_detail_title {
+    font-size: 25px;
+    font-family: 'Cinzel Decorative', cursive;
+    padding: 0;
+    margin: 0;
+    padding-left: 10px;
+}
+
+.responsive__country-map {
+    height: 700px;}
+    @media screen and (max-width:1024px) {
+        .responsive__country-map {
+            height: 500px;
+        }
+    }
