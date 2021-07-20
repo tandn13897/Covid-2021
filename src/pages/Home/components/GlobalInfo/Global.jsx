@@ -1,45 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import {Row, Col, Typography, Card, message, Spin} from 'antd'
-// import { PieChart, Pie, ResponsiveContainer } from 'recharts';
+import {Row, Col, Typography, Spin} from 'antd'
+import {ExperimentOutlined, FrownOutlined, SmileOutlined} from '@ant-design/icons'
 import moment from 'moment'
-import { getDefaultData } from '../../../../services/covidAPI/CovidAPI'
-import EarthAndCovid from '../../../../assests/images/earth-and-covid.jpg'
+import { getDefaultData, getCountriesData } from '../../../../services/covidAPI/CovidAPI'
+import numeral from 'numeral'
+import HighLightCard from '../../../../components/HighLight/HighLight'
+
 import CountryTables from './CountryTables'
+import Map from './Map'
+import "leaflet/dist/leaflet.css";
+import LineChart from './LineChart'
 
 const { Title } = Typography
 
-const CardStyle = (type) => {
-    if (type === 'New Cases' || type === 'Total Cases') return ({color:'gray', fontSize:'30px', backgroundColor:'gold' })
-    if (type === 'New Deaths' || type === 'Total Deaths') return ({color:'black', fontSize:'30px', backgroundColor:'red'})
-    if (type === 'New Recover' || type === 'Total Recover') return ({fontSize:'30px', backgroundColor:'greenyellow'})
-}
-
-function HighlightCard ({ name, info, type}) {
-    return (
-        <Col 
-            xs={24} 
-            sm={12} 
-            md={{span: 6, offset:1}} 
-            style={{
-                textAlign:'center'
-            }}
-        >
-            <Card
-                title={name} 
-                hoverable 
-                headStyle={CardStyle(type)}
-                bodyStyle={{fontSize:'20px'}}
-            >
-                {info}
-            </Card>
-        </Col>
-    )
+const rowStyle = {
+    marginTop:'10px', 
+    marginLeft:'0', 
+    marginRight:'0'
 }
 
 export default function Global() {
     const [isLoading, setIsLoading] = useState(false)
     const [covidInfoGlobal, setCovidInfoGlobal] = useState([])
     const [covidInfoCountries, setCovidInfoCountries] = useState([])
+    const [casesType, setCasesType] = useState("cases");
+
 
     const handleLoading = () => {
         if (isLoading) {
@@ -57,14 +42,56 @@ export default function Global() {
             )
         } 
         return (
-            <Row gutter={[20, 40]} justify='center' align='middle'>
-                <HighlightCard name={'New Cases'} info={`${covidInfoGlobal.NewConfirmed} Cases`} type={'New Cases'}/>
-                <HighlightCard name={'New Deaths'} info={`${covidInfoGlobal.NewDeaths} Deaths`} type={'New Deaths'}/>
-                <HighlightCard name={'New Recover'} info={`${covidInfoGlobal.NewRecovered} Cases`} type={'New Recover'}/>
-                <HighlightCard name={'Total Cases'} info={`${covidInfoGlobal.TotalConfirmed} Cases`} type={'Total Cases'}/>
-                <HighlightCard name={'Total Deaths'} info={`${covidInfoGlobal.TotalDeaths} Deaths`} type={'Total Deaths'}/>
-                <HighlightCard name={'Total Recover'} info={`${covidInfoGlobal.TotalRecovered} Cases`} type={'Total Recover'}/>
-            </Row>
+            <div>
+                <Row style={rowStyle}>
+                    <Col
+                        xs={24} sm={24} md={{span:15, offset:0}} lg={{span:12, offset:3}} xl={{span:12, offset:3}}
+                    >
+                        <p className='country_detail_title'>Last 24 hours update</p>
+                    </Col>
+                </Row>
+                <Row gutter={[10, 20]} style={rowStyle}>
+                    <Col
+                        xs={12} sm={12} md={{span:8, offset:0}} lg={{span:6, offset:3}} xl={{span:6, offset:3}}
+                    >
+                        <HighLightCard name={'New Cases'} info={`${numeral(covidInfoGlobal.todayCases).format('0,0')}`} type={'New Cases'} icon={<ExperimentOutlined/>} key='1'/>
+                    </Col>
+                    <Col    
+                        xs={12} sm={12} md={{span:8, offset:0}} lg={{span:6, offset:0}} xl={{span:6, offset:0}} 
+                    >
+                        <HighLightCard name={'New Deaths'} info={`${numeral(covidInfoGlobal.deathsPerOneMillion).format('0,0')}`} type={'New Deaths'} icon={<FrownOutlined/>}  key='2'/>
+                    </Col>
+                    <Col
+                        xs={24} sm={{span:18, offset:3}} md={{span:8, offset:0}} lg={{span:6, offset:0}} xl={{span:6, offset:0}}                    
+                    >
+                        <HighLightCard name={'New Recovered'} info={`${numeral(covidInfoGlobal.todayRecovered).format('0,0')}`} type={'New Recover'} icon={<SmileOutlined />} key='3'/> 
+                    </Col>
+                </Row>
+                <Row style={rowStyle}>
+                    <Col
+                        xs={24} sm={24} md={{span:15, offset:0}} lg={{span:12, offset:3}} xl={{span:12, offset:3}}
+                    >
+                        <p className='country_detail_title'>Total Data</p>
+                    </Col>
+                </Row>
+                <Row gutter={[10, 20]} style={rowStyle}>
+                    <Col
+                        xs={12} sm={12} md={{span:8, offset:0}} lg={{span:6, offset:3}} xl={{span:6, offset:3}}
+                    >
+                        <HighLightCard name={'Total Cases'} info={`${numeral(covidInfoGlobal.cases).format('0.0a')}`} type={'Total Cases'} icon={<ExperimentOutlined/>} key='4'/>
+                    </Col>
+                    <Col
+                        xs={12} sm={12} md={{span:8, offset:0}} lg={{span:6, offset:0}} xl={{span:6, offset:0}} 
+                    >
+                        <HighLightCard name={'Total Deaths'} info={`${numeral(covidInfoGlobal.deaths).format('0.0a')}`} type={'New Deaths'} icon={<FrownOutlined/>}  key='5'/>
+                    </Col>
+                    <Col
+                        xs={24} sm={{span:18, offset:3}} md={{span:8, offset:0}} lg={{span:6, offset:0}} xl={{span:6, offset:0}}
+                    >
+                        <HighLightCard name={'Total Recovered'} info={`${numeral(covidInfoGlobal.recovered).format('0.0a')}`} type={'Total Recover'} icon={<SmileOutlined />} key='6'/>
+                    </Col>
+                </Row>
+            </div>
         )
     }
 
@@ -73,60 +100,56 @@ export default function Global() {
         setIsLoading(true)
         getDefaultData()
             .then(res => {
-                setCovidInfoGlobal(res.data.Global)
-                setCovidInfoCountries(res.data.Countries)
+                setCovidInfoGlobal(res.data)
                 setIsLoading(false)
-                console.log(covidInfoCountries)
             })
             .catch(error => {
-                message.error(error)
+                alert(error)
             })
     }, [])
 
-    // const dataGlobalByDate = [
-    //     { name: 'New Cases', value: covidInfoGlobal.NewConfirmed },
-    //     { name: 'New Deaths', value: covidInfoGlobal.NewDeaths },
-    //     { name: 'New Recover', value: covidInfoGlobal.NewRecovered }
-    // ]
-
-    // const dataGlobalTotal = [
-    //     { name: 'Total Cases', value: covidInfoGlobal.TotalConfirmed },
-    //     { name: 'Total Deaths', value: covidInfoGlobal.TotalDeaths },
-    //     { name: 'Total Recover', value: covidInfoGlobal.TotalRecovered }
-    // ]
+    useEffect(() => {
+        getCountriesData()
+            .then(res => {
+                setCovidInfoCountries(res.data)
+            })
+            .catch(error => {
+                alert(error)
+            })
+    },[])
 
     return (
         <div style={{padding:'30px'}}>
-            <Row align='middle' justify='center' style={{margin:'30px'}}>
+            <Row align='middle' justify='center' style={{marginTop:'30px'}}>
                 <Col 
                     xs={24} 
                     sm={24} 
-                    md={{span:21, offset:2}} 
-                    lg={{span:21, offset:2}}
+                    md={{span:20, offset:1}} 
+                    lg={{span:20, offset:1}}
                     style={{
                         textAlign:'center'
                     }}
                 >
                     <Title level={3} italic>COVID-19 CORONAVIRUS PANDEMIC</Title>
-                    <img src={EarthAndCovid} alt='#src' width='40%' height='auto'/>
                     <p
                         style={{
                             fontSize:'25px',
                             padding:'20px 10px'
                         }}
-                    >Last update: {`${moment(covidInfoGlobal.Date).format('MMMM Do YYYY, h:mm:ss a')}`}</p>
-                </Col>
-                
+                    >
+                        Globally, as of {`${moment(new Date()).format('MMMM Do YYYY')}`}, there have been 
+                        <span style={{color:'blue', fontSize:'30px', fontStyle:'italic'}}> {numeral(covidInfoGlobal.cases).format('0.0a')} confirmed cases </span>
+                        of COVID-19, it affected 
+                        <span style={{color:'red', fontSize:'30px', fontStyle:'italic'}}> {numeral(covidInfoGlobal.affectedCountries).format('0,0')} countries</span>
+                    </p>
+                </Col>   
             </Row>
             {handleLoading()}
-            {/* <Row>
-            <ResponsiveContainer width="100%" height="300px">
-                <PieChart width={400} height={400}>
-                    <Pie data={dataGlobalByDate} dataKey="value" cx={200} cy={200} outerRadius={60} fill="#8884d8" />
-                    <Pie data={dataGlobalTotal} dataKey="value" cx={200} cy={200} innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-                </PieChart>
-            </ResponsiveContainer>
-            </Row> */}
+            <Map
+                countries={covidInfoCountries}
+                casesType={casesType}
+            />
+            <LineChart/>
             <CountryTables data={covidInfoCountries}/>
         </div>
     )

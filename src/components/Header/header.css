@@ -1,0 +1,44 @@
+.header__logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__logo > img {
+    width: 180px;
+}
+
+.header__logo > h4 {
+    font-family: 'Playfair Display SC', serif;
+    font-family: 'Rufina', serif;
+    font-size: 40px;
+    padding: 20px 0;
+}
+
+.header__menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__user-menu > Button {
+    font-size: 25px;
+    color: #fff;
+}
+
+@media screen and (max-width:768px) {
+    .header__logo > img {
+        width: 130px;
+    }
+    .header__logo > h4 {
+        font-size: 20px;
+    }
+    .header__main-menu-responsive > Button {
+        background-color: #018475;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

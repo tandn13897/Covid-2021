@@ -53,10 +53,6 @@ export default function LoginForm() {
                     dispatch(GlobalActions.getError('Account or password incorrect'))
                 }
     }
-
-    const handleGoToHomePage = () => {
-        history.push('/')
-    }
     
     return (
         <div className='login__container'>
@@ -95,7 +91,6 @@ export default function LoginForm() {
                             type = 'password'
                         />
                         <Button htmlType='submit' className='login__btn-submit'>LOGIN</Button>
-                        <Button onClick={handleGoToHomePage} className='login__btn-homepage'>Go to Homepage</Button>
                     </Form>
                 )
             }}

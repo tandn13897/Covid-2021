@@ -1,0 +1,48 @@
+.card-modal {
+    box-shadow: 
+    rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.card-modal__content {
+    display: flex;
+}
+
+.card-modal__content > img {
+    width: 200px;
+    height: auto;
+}
+
+.card-modal__content > div {
+    font-size: 20px;
+    font-family: 'Abril Fatface', cursive;
+    width: 100%;
+    padding-left: 20px;
+}
+
+.card-modal__content > div > p {
+    color: royalblue;
+    float: right;
+    margin-bottom: 5px;
+}
+
+.description > div:first-child > p {
+    padding-top: 10px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.description > div:first-child > p:nth-child(2) {
+    float: right;
+    font-size: large;
+}
+
+@media screen and (max-width:768px) {
+    .card-modal__content {
+        flex-direction: column;
+    }
+    .card-modal__content > img {
+        width: 100%;
+    }
+    .card-modal__content > div {
+        padding-left: 0;
+    }
+}
