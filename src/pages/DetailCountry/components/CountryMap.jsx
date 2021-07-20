@@ -2,7 +2,6 @@ import React, { useState , useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import {  GlobalReducer } from '../../../redux/slices/slicesDetails/GlobalSlices'
 import CountriesMap from '../../../data/countries.json'
-import L from 'leaflet'
 import { MapContainer, GeoJSON, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
