@@ -1,10 +1,12 @@
 import React, { useState, useEffect} from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Row, Col, Typography, Button } from 'antd';
+import { Row, Col, Typography, Button, DatePicker } from 'antd';
 import { getAllCovidData } from '../../../../services/covidAPI/CovidAPI'
 import { handleChangeData } from '../../../../unity/Unity'
+import moment from "moment";
 
 const {Title} = Typography
+const { RangePicker } = DatePicker;
 
 export default function LineChart() {
     const [allCaseCovid, setAllCaseCovid] = useState([])
@@ -13,6 +15,8 @@ export default function LineChart() {
     const [optionDataCases, setOptionDataCases] = useState([])
     const [optionDataDeaths, setOptionDataDeaths] = useState([])
     const [optionDataRecovered, setOptionDataRecovered] = useState([])
+    const [startDay, setStartDay] = useState('')
+    const [endDay, setEndDay] = useState('')
     const [reportType, setReportType] = useState('all')
 
     useEffect(() => {
@@ -37,7 +41,9 @@ export default function LineChart() {
     useEffect(() => {
         let customDataCases = [];
         let customDataDeaths = [];
-        let customDataRecovered = []
+        let customDataRecovered = [];
+        const startPoint = allCaseCovid.findIndex((day) => day.day === startDay)
+        const endPoint = allCaseCovid.findIndex((day) => day.day === endDay)
         switch(reportType) {
             case 'all':
                 customDataCases = allCaseCovid
@@ -54,6 +60,11 @@ export default function LineChart() {
                 customDataDeaths = allDeathCovid.slice(allDeathCovid.length - 7)
                 customDataRecovered = allRecoveredCovid.slice(allRecoveredCovid.length - 7)
                 break;
+            case 'duration':
+                customDataCases = allCaseCovid.slice(startPoint,endPoint)
+                customDataDeaths = allDeathCovid.slice(startPoint,endPoint)
+                customDataRecovered = allRecoveredCovid.slice(startPoint,endPoint)
+                break;
             default:
                 customDataCases = allCaseCovid
                 customDataDeaths = allDeathCovid
@@ -63,18 +74,19 @@ export default function LineChart() {
         setOptionDataCases(customDataCases)
         setOptionDataDeaths(customDataDeaths)
         setOptionDataRecovered(customDataRecovered)
-    }, [allCaseCovid, reportType, allDeathCovid, allRecoveredCovid])
+    }, [allCaseCovid, reportType, allDeathCovid, allRecoveredCovid, startDay, endDay])
+
+    const handleSelectedTime = (values) => {
+        if (values) {
+            setStartDay(moment(values[0]._d).format("MM/DD/YY"))
+            setEndDay(moment(values[1]._d).format("MM/DD/YY"))
+            setReportType('duration')
+        }
+    }
 
     return (
         <Row style={{height:'1000px', padding:'30px 0'}}>
-            <Col
-                xs={24} 
-                sm={24} 
-                md={{span:20, offset:2}} 
-                lg={{span:20, offset:2}} 
-            >
-                <Title level={2}>Worldwide Situation</Title>
-            </Col>
+              
             <Col
                 xs={24} 
                 sm={24} 
@@ -84,6 +96,7 @@ export default function LineChart() {
                 <Button type='text' onClick={() => setReportType('all') }>All</Button>
                 <Button type='text' onClick={() => setReportType('30')}>30 Days</Button>
                 <Button type='text' onClick={() => setReportType('7')}>7 Dyas</Button>
+                <RangePicker onChange={handleSelectedTime}/>
             </Col>
             <Col xs={24} sm={24} md={{span:20, offset:2}} lg={{span:20, offset:2}} >
                 <Title level={4}>Cases</Title>

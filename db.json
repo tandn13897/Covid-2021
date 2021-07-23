@@ -1,0 +1,25 @@
+{
+  "accounts": [
+    {
+      "id": "1",
+      "username": "admin",
+      "email": "admin@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "2",
+      "username": "dfben",
+      "email": "dfben@gmail.com",
+      "password": "456"
+    },
+    {
+      "username": "Eren183",
+      "password": "ngocTan183",
+      "email": "dangngoctan18397@gmail.com",
+      "first_name": "Tan",
+      "last_name": "Dang",
+      "confirmPassword": "ngocTan183",
+      "id": "82_odif"
+    }
+  ]
+}

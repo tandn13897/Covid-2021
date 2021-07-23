@@ -4,7 +4,9 @@ const initialState = {
     username: '',
     password: '', 
     isLoading: false,
-    countryId: '', 
+    countryId: '',
+    isLogin:'', 
+    error:''
 }
 
 const globalSlice = createSlice({
@@ -22,6 +24,12 @@ const globalSlice = createSlice({
         },
         getCountryId (state, action) {
             state.countryId = action.payload
+        },
+        getUserLogin (state, action) {
+            state.isLogin = action.payload
+        },
+        getError (state, action) {
+            state.error = action.payload
         }
     } 
 })

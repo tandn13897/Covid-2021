@@ -127,13 +127,13 @@ export default function CountryTables({ data }) {
                         <Table columns={columns} dataSource={data} bordered rowKey={record => record.countryInfo.iso3}/>
                     </TabPane>
                     <TabPane tab='Top 10 Highest Cases' key='highestCase'>
-                        <Table columns={columns} dataSource={topHighestCaseCountry} bordered pagination={false} />
+                        <Table columns={columns} dataSource={topHighestCaseCountry} bordered pagination={false} rowKey={record => record.countryInfo.iso3}/>
                     </TabPane>
                     <TabPane tab='Top 10 Highest Deaths' key='highestDeaths'>
-                        <Table columns={columns} dataSource={topHighestDeathsCountry} bordered pagination={false} />
+                        <Table columns={columns} dataSource={topHighestDeathsCountry} bordered pagination={false} rowKey={record => record.countryInfo.iso3}/>
                     </TabPane>
                     <TabPane tab='Top 10 Highest Recovered' key='highestRecovered'>
-                        <Table columns={columns} dataSource={topHighestRecoveredCountry} bordered pagination={false} />
+                        <Table columns={columns} dataSource={topHighestRecoveredCountry} bordered pagination={false} rowKey={record => record.countryInfo.iso3}/>
                     </TabPane>
                 </Tabs>
             </Col>

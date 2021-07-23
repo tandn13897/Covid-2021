@@ -2,15 +2,15 @@ import React, { useState, useEffect} from 'react'
 import { Row, Col, Typography, Spin } from 'antd'
 
 import CardModel from '../Card/Card'
-import { getNews } from '../../services/newsAPI/NewsAPI'
 import './news.css'
 import NewHeader from './NewHeader'
 import '../../assests/font/font.css'
+import Data from '../../data/news.json'
 
 const {Title} = Typography
 
 export default function News() {
-    const [data, setData] = useState([])
+    const [newsData, setNewsData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
     const loadingComponent = () => {
@@ -30,14 +30,8 @@ export default function News() {
 
     useEffect(() => {
         setIsLoading(true)
-        getNews()
-            .then(res => {
-                setData(res.data.articles)
-                setIsLoading(false)
-            })
-            .catch(err => {
-                alert(err)
-            })
+        setNewsData(Data.article)
+        setIsLoading(false)
     }, [])
 
     return (
@@ -48,7 +42,7 @@ export default function News() {
         <NewHeader/>
         <Row gutter={[0, 40]} justify='space-around'>
             { isLoading ? loadingComponent() : null} 
-                { data && data.map((item, index) => {
+                { newsData && newsData.map((item, index) => {
                     return (
                         <Col
                             key={index}
