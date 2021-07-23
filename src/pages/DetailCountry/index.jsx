@@ -63,7 +63,6 @@ export default function Detail() {
 
     return (
         <div>
-            <Header/>
             <Row>
                 <Col
                     xs={{span:20, offset:2}} 
@@ -114,9 +113,10 @@ const loadingStyle = {
     zIndex:'2',
     maxHeight:'none',
     width:'100vw',
-    position:'fixed',
+    position:'relative',
     top:'0',
     left:'0',
     backgroundColor:'rgba(0,0,0,0.2)',
     height:'100vh'
 }
+

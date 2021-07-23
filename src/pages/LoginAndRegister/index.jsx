@@ -4,7 +4,6 @@ import {Row, Col, Tabs} from 'antd'
 import './login.css'
 import Login from './Login'
 import Register from './Register'
-import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 
 const { TabPane } = Tabs;
@@ -13,7 +12,6 @@ export default function LoginAndRegisterForm() {
 
     return (
         <div>
-            <Header/>
             <Row>
                 <Col xs={24} sm={24} md={24} lg={{span:20, offset:2}}>
                     <section>
@@ -29,6 +27,7 @@ export default function LoginAndRegisterForm() {
                                 marginLeft:10,
                                 marginRight:10,
                             }}
+                            de
                         >
                             <TabPane tab="Login" key="login-form">
                                 <Login/>

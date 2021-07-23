@@ -22,11 +22,11 @@ const showDataOnMap = (data, casesType = "cases") =>
         >
         <Popup>
             <Card
-                title={<a href='#'>
-                    <img src={country.countryInfo.flag} alt='#src' width='50px'/>
+                title={<p>
+                    <img src={country.countryInfo.flag} alt='#src' width='50px' style={{border:'1px solid black'}}/>
                     {'\u00A0'}
                     {country.country}
-                </a>}
+                </p>}
             >
                 <Space direction='vertical'>
                     <Text type='warning'>Cases: {numeral(country.cases).format('0,0')}</Text>

@@ -24,6 +24,8 @@
     align-items: center;
     justify-content: space-evenly;
     color: seashell;
+    overflow: hidden;
+    text-overflow: ellipsis;
 } 
 
 .header_user_info > ul > li .btn-user-info:hover {

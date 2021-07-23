@@ -13,6 +13,7 @@ const ButtonStyle = {
 
 export default function UserInfo() {
     const [visible, setVisible] = useState(false)
+    const username = localStorage.getItem('token')
     const history = useHistory()
 
     const handleVisibleChange = visible => {
@@ -20,7 +21,7 @@ export default function UserInfo() {
     }
 
     const handleLogout = () => {
-        localStorage.removeItem('user')
+        localStorage.removeItem('token')
         history.push('/login')
     }
 
@@ -66,8 +67,8 @@ export default function UserInfo() {
                         size="large"
                         className="btn-user-info"
                     >
-                        <Avatar className="avatar">A</Avatar>
-                            Admin
+                        <Avatar className="avatar">{username.slice(0,1).toUpperCase()}</Avatar>
+                            {username.toUpperCase()}
                         <DownOutlined />
                     </Button>
                 </Popover>

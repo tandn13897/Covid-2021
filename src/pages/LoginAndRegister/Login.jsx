@@ -1,13 +1,14 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button } from 'antd'
 import { useHistory } from 'react-router'
-import {  useDispatch } from 'react-redux'
+import { useSelector ,useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import { Formik, Form, FastField } from 'formik'
 import PropTypes from 'prop-types';
 import InputField from '../../components/InputField'
 import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
+import axios from 'axios'
 
 
 import { GlobalActions } from '../../redux/slices/RootAction'
@@ -22,7 +23,8 @@ LoginForm.defaultProps = {
 }
 
 export default function LoginForm() {
-    // const error = useSelector(state => state.GlobalReducer.error)
+    const [accounts, setAccounts] = useState([])
+    const error = useSelector(state => state.GlobalReducer.error)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -38,21 +40,27 @@ export default function LoginForm() {
     })
 
     const handleSubmit = (values) =>  {
-        console.log('ID là', values.username)
-        console.log('Pass là', values.password)
-            if ( values.username === 'admin' && values.password === '123')
-                {
-                    dispatch(GlobalActions.getUserName('admin'))
-                    dispatch(GlobalActions.getUserPassword('123'))
-                    localStorage.setItem('user', 'admin')
-                    localStorage.setItem('password', '123')
-                    history.push('/')
-                }
-            else
-                {
-                    dispatch(GlobalActions.getError('Account or password incorrect'))
-                }
+        const element = accounts.findIndex(
+            (account) => account.username === values.username && account.password === values.password
+        )
+        if (element >= 0) {
+            dispatch(GlobalActions.getUserName(accounts[element].username))
+            dispatch(GlobalActions.getUserPassword(accounts[element].password))
+            localStorage.setItem('token', accounts[element].username)
+            dispatch(GlobalActions.getUserLogin(true))
+            history.push('/')
+        } else {
+            dispatch(GlobalActions.getError('Account or password incorrect'))
+        }
     }
+
+    useEffect(() => {
+        axios.get('http://localhost:3000/accounts')
+            .then(res => {
+                setAccounts(res.data)
+            })  
+            .catch(err => alert(err))
+    })
     
     return (
         <div className='login__container'>
@@ -71,7 +79,7 @@ export default function LoginForm() {
             >
             {formikProps => {
                 const { values, errors} = formikProps;
-                console.log({values, errors})
+                // console.log({values, errors})
                 return (
                     <Form>
                         <FastField
@@ -90,6 +98,7 @@ export default function LoginForm() {
                             placeholder = "Enter your password"
                             type = 'password'
                         />
+                        <span style = {{color:'red'}}>{error}</span>
                         <Button htmlType='submit' className='login__btn-submit'>LOGIN</Button>
                     </Form>
                 )

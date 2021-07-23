@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Drawer, Button, Menu, Affix } from "antd";
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router'
+import { useSelector, useDispatch} from 'react-redux'
 import {
   GlobalOutlined,
   MenuOutlined,
@@ -10,9 +11,9 @@ import {
   HomeOutlined,
   LoginOutlined,
 } from "@ant-design/icons";
+import {GlobalActions, GlobalReducer} from '../../redux/slices/slicesDetails/GlobalSlices'
 
 import UserInfo from "./components/UserInfo";
-// import CovidLogo from '../../assests/images/corona-5348198_640.jpg'
 import './header.css'
 import '../../assests/font/font.css'
 
@@ -44,15 +45,10 @@ const LinkStyle = {
 export default function Header() {
     const [visible, setVisible] = useState(false);
     const [showResponsiveMenu, setShowResponsiveMenu] = useState(false)
+    const isUserLogin = useSelector(state => state.GlobalReducer.isLogin)
+    const username = useSelector(state => state.GlobalReducer.username)
+    const dispacth = useDispatch()
     const history = useHistory()
-
-    const checkUser = () => {
-        const username = localStorage.getItem('user')
-        const password = localStorage.getItem('password')
-        console.log('User Info:', username, password)
-        if (username === 'admin' && password === '123') return true;
-        return false
-    };
 
     const showDrawer = () => {
         setVisible(true);
@@ -74,6 +70,12 @@ export default function Header() {
             }
         }
         window.addEventListener('resize',handleResize)   
+    })
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) return dispacth(GlobalActions.getUserLogin(true));
+        return dispacth(GlobalActions.getUserLogin(false))
     })
 
 return (
@@ -104,24 +106,24 @@ return (
                                 { showResponsiveMenu ? 
                                 (
                                     <div className='header__main-menu-responsive'>
-                                <Button onClick={showDrawer} icon={<MenuOutlined />}/>
-                                <Drawer
-                                    placement="left"
-                                    closable={false}
-                                    onClose={onClose}
-                                    visible={visible}
-                                    drawerStyle={{backgroundColor:'#018475'}}
-                                >
-                                    <Menu mode='inline' style={MenuStyle}>
-                                        <Menu.Item key='home' icon={<ReadOutlined />} style={MenuItemStyle}>
-                                            <Link to='/' style={LinkStyle}>Home</Link></Menu.Item>
-                                        <Menu.Item key='global' icon={<GlobalOutlined />} style={MenuItemStyle}>
-                                            <Link to='/global' style={LinkStyle}>Global</Link></Menu.Item>
-                                        <Menu.Item key='detail' icon={<EnvironmentOutlined />} style={MenuItemStyle}>
-                                            <Link to='/country/:countryId' style={LinkStyle}>Detail</Link></Menu.Item>
-                                    </Menu>
-                                </Drawer>
-                            </div>
+                                        <Button onClick={showDrawer} icon={<MenuOutlined />}/>
+                                        <Drawer
+                                            placement="left"
+                                            closable={false}
+                                            onClose={onClose}
+                                            visible={visible}
+                                            drawerStyle={{backgroundColor:'#018475'}}
+                                        >
+                                            <Menu mode='inline' style={MenuStyle}>
+                                                <Menu.Item key='home' icon={<ReadOutlined />} style={MenuItemStyle}>
+                                                    <Link to='/' style={LinkStyle}>Home</Link></Menu.Item>
+                                                <Menu.Item key='global' icon={<GlobalOutlined />} style={MenuItemStyle}>
+                                                    <Link to='/global' style={LinkStyle}>Global</Link></Menu.Item>
+                                                <Menu.Item key='detail' icon={<EnvironmentOutlined />} style={MenuItemStyle}>
+                                                    <Link to='/country/:countryId' style={LinkStyle}>Detail</Link></Menu.Item>
+                                            </Menu>
+                                        </Drawer>
+                                    </div>
                                 )
                                 :
                                 (<Menu mode='horizontal' style={MenuStyle}>
@@ -137,28 +139,9 @@ return (
                                 </Menu>)
                                 }
                             </div>
-                            {/* <div className='header__main-menu-responsive'>
-                                <Button onClick={showDrawer} icon={<MenuOutlined />}/>
-                                <Drawer
-                                    placement="left"
-                                    closable={false}
-                                    onClose={onClose}
-                                    visible={visible}
-                                    drawerStyle={{backgroundColor:'#018475'}}
-                                >
-                                    <Menu mode='inline' style={MenuStyle}>
-                                        <Menu.Item key='home' icon={<ReadOutlined />} style={MenuItemStyle}>
-                                            <Link to='/' style={LinkStyle}>Home</Link></Menu.Item>
-                                        <Menu.Item key='global' icon={<GlobalOutlined />} style={MenuItemStyle}>
-                                            <Link to='/global' style={LinkStyle}>Global</Link></Menu.Item>
-                                        <Menu.Item key='detail' icon={<EnvironmentOutlined />} style={MenuItemStyle}>
-                                            <Link to='/country/:countryId' style={LinkStyle}>Detail</Link></Menu.Item>
-                                    </Menu>
-                                </Drawer>
-                            </div> */}
                         </div>
                         <div className='header__user-menu'>
-                            { checkUser() ? 
+                            { isUserLogin ? 
                             (<UserInfo/>)
                             :
                             (<Button type='text' icon={<LoginOutlined/>} style={MenuItemStyle} onClick={handleToLoginPage}>Login</Button>) }

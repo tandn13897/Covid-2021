@@ -1,19 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import {getNewsTechnology} from '../../services/newsAPI/NewsAPI'
 import { Row, Col } from 'antd'
+import Data from '../../data/news.json'
 
 export default function NewHeader() {
     const [technologyData, setTechnologyData] = useState([])
 
     useEffect(() => {
-        getNewsTechnology()
-            .then(res => {
-                setTechnologyData(res.data.articles)
-                console.log(technologyData)
-            })
-            .catch(err => {
-                alert(err)
-            })
+        setTechnologyData(Data.header)
     }, [])
 
     return (
