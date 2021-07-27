@@ -19,11 +19,12 @@ Register.defaultProps = {
     onSubmit: null,
 }
 
-function success() {
-    Modal.success({
-        content: 'Register Success',
-    });
-}
+// function success() {
+//     Modal.success({
+//         content: 'Register Success',
+//         afterClose: {}
+//     });
+// }
 
 export default function Register() {
     const [accounts, setAccounts] = useState([])
@@ -55,6 +56,14 @@ export default function Register() {
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
     })
 
+    const handleLogIn = (username, password) => {
+        dispatch(GlobalActions.getUserName(username))
+        dispatch(GlobalActions.getUserPassword(password))
+        localStorage.setItem('token', username)
+        dispatch(GlobalActions.getUserLogin(true))
+        history.push('/')
+    }
+
     const handleSubmit = (values) => {
         const element = accounts.findIndex(
             (account) => account.username === values.username && account.email === values.email
@@ -67,7 +76,10 @@ export default function Register() {
                 url: 'http://localhost:3000/accounts',
                 data: values
             })
-            success()
+            Modal.success({
+                content: 'Register Success',
+                onOk:handleLogIn(values.username, values.password)
+            });
         }
     }
 
