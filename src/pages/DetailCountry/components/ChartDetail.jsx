@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { Row, Col, Typography, Button } from 'antd';
+import { Row, Col, Typography, Button, DatePicker, Popover } from 'antd';
 import { handleChangeData, handleChangeDataTotal } from '../../../unity/Unity'
-import _ from 'lodash'
-import numeral from 'numeral';
+import moment from "moment";
 
 const { Title } = Typography
+const { RangePicker } = DatePicker;
 
 export default function ChartDetail({history}) {
     const [countryCases, setCountryCases] = useState([])
@@ -21,8 +21,8 @@ export default function ChartDetail({history}) {
     const [countryOptionTotalDeaths, setCountryOptionTotalDeaths] = useState([])
     const [countryOptionTotalRecovered, setCountryOptionTotalRecovered] = useState([])
     const [reportType, setReportType] = useState('all')
-
-    // const [allCountryData, setAllCountryData] = useState([])
+    const [startDay, setStartDay] = useState('')
+    const [endDay, setEndDay] = useState('')
 
     useEffect(() => {
         if (history.timeline) {
@@ -32,30 +32,6 @@ export default function ChartDetail({history}) {
             let chartAllCases = handleChangeDataTotal(history.timeline, 'cases')
             let chartAllDeaths = handleChangeDataTotal(history.timeline, 'deaths')
             let chartAllRecovered = handleChangeDataTotal(history.timeline, 'recovered')
-            
-            // chartAllCases = chartAllCases.map((item, index) => {
-            //     return (
-            //         {date: item.day, cases: numeral(item.case).format('0.0a')}
-            //     )
-            // })
-
-            // chartAllDeaths = chartAllDeaths.map((item, index) => {
-            //     return (
-            //         {date: item.day, deaths: numeral(item.case).format('0.0a')}
-            //     )
-            // })
-
-            // chartAllRecovered = chartAllRecovered.map((item, index) => {
-            //     return (
-            //         {date: item.day, recovered: numeral(item.case).format('0.0a')}
-            //     )
-            // })
-
-            // let mergeData = _(chartAllCases)
-            //     .concat(chartAllDeaths, chartAllRecovered)
-            //     .groupBy('date')
-            //     .map(_.spread(_.merge))
-            //     .value();
 
             setCountryCases(chartCasesData)
             setCountryDeaths(chartDeathsData)
@@ -63,8 +39,6 @@ export default function ChartDetail({history}) {
             setCountryTotalCases(chartAllCases)
             setCountryTotalDeaths(chartAllDeaths)
             setCountryTotalRecovered(chartAllRecovered)
-
-            // setAllCountryData(mergeData)
         }
     },[history])
 
@@ -100,6 +74,14 @@ export default function ChartDetail({history}) {
                 customTotalDataDeaths = countryTotalDeaths.slice(countryTotalDeaths.length - 7)
                 customTotalDataRecovered = countryTotalRecovered.slice(countryTotalRecovered.length - 7)
                 break;
+            case 'duration':
+                customDataCases = countryCases.slice(countryCases.findIndex((day) => day.day === startDay),countryCases.findIndex((day) => day.day === endDay))
+                customDataDeaths = countryDeaths.slice(countryDeaths.findIndex((day) => day.day === startDay),countryDeaths.findIndex((day) => day.day === endDay))
+                customDataRecovered = countryRecovered.slice(countryRecovered.findIndex((day) => day.day === startDay),countryRecovered.findIndex((day) => day.day === endDay))
+                customTotalDataCases = countryTotalCases.slice(countryTotalCases.findIndex((day) => day.day === startDay),countryTotalCases.findIndex((day) => day.day === endDay))
+                customTotalDataDeaths = countryTotalDeaths.slice(countryTotalDeaths.findIndex((day) => day.day === startDay),countryTotalDeaths.findIndex((day) => day.day === endDay))                    
+                customTotalDataRecovered = countryTotalRecovered.slice(countryTotalRecovered.findIndex((day) => day.day === startDay),countryTotalRecovered.findIndex((day) => day.day === endDay))
+                break;
             default:
                 customDataCases = countryCases
                 customDataDeaths = countryDeaths
@@ -115,7 +97,19 @@ export default function ChartDetail({history}) {
             setCountryOptionTotalCases(customTotalDataCases)
             setCountryOptionTotalDeaths(customTotalDataDeaths)
             setCountryOptionTotalRecovered(customTotalDataRecovered)
-    }, [reportType, countryCases, countryDeaths, countryRecovered, countryTotalCases, countryTotalDeaths, countryTotalRecovered])
+    }, [reportType, countryCases, countryDeaths, countryRecovered, countryTotalCases, countryTotalDeaths, countryTotalRecovered, startDay, endDay])
+
+    const handleSelectedTime = (values) => {
+        if (values) {
+            setStartDay(moment(values[0]._d).format("MM/DD/YY"))
+            setEndDay(moment(values[1]._d).format("MM/DD/YY"))
+            setReportType('duration')
+        }
+    }
+
+    const content = (
+        <RangePicker onChange={handleSelectedTime}/>
+      );
 
     return (
         <Row style={{height:'1800px', marginTop:'50px'}}>
@@ -127,7 +121,12 @@ export default function ChartDetail({history}) {
             >
                 <Button type='text' onClick={() => setReportType('all') }>All</Button>
                 <Button type='text' onClick={() => setReportType('30')}>30 Days</Button>
-                <Button type='text' onClick={() => setReportType('7')}>7 Dyas</Button>
+                <Button type='text' onClick={() => setReportType('7')}>7 Days</Button>
+                <Popover content={content} trigger="click" title='Selecting Day' placement='bottom'>
+                    <Button type='text'>
+                        Choosing duration
+                    </Button>
+                </Popover>
             </Col>
             <Col
                 xs={{span:23, offset:1}} 

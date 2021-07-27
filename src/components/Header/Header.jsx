@@ -11,7 +11,7 @@ import {
   HomeOutlined,
   LoginOutlined,
 } from "@ant-design/icons";
-import {GlobalActions, GlobalReducer} from '../../redux/slices/slicesDetails/GlobalSlices'
+import {GlobalActions} from '../../redux/slices/slicesDetails/GlobalSlices'
 
 import UserInfo from "./components/UserInfo";
 import './header.css'
@@ -46,7 +46,6 @@ export default function Header() {
     const [visible, setVisible] = useState(false);
     const [showResponsiveMenu, setShowResponsiveMenu] = useState(false)
     const isUserLogin = useSelector(state => state.GlobalReducer.isLogin)
-    const username = useSelector(state => state.GlobalReducer.username)
     const dispacth = useDispatch()
     const history = useHistory()
 
@@ -103,7 +102,7 @@ return (
                     <div className='header__menu'>
                         <div className='header__main-menu'> 
                             <div>
-                                { showResponsiveMenu ? 
+                                {/* { showResponsiveMenu ? 
                                 (
                                     <div className='header__main-menu-responsive'>
                                         <Button onClick={showDrawer} icon={<MenuOutlined />}/>
@@ -137,9 +136,39 @@ return (
                                         <Link to='/country/:countryId' style={LinkStyle}>Detail</Link>
                                     </Menu.Item>
                                 </Menu>)
-                                }
+                                } */}
+                                <ul style={MenuStyle} className='menu-item'>
+                                    <li key='home' style={MenuItemStyle}>
+                                        <HomeOutlined /><Link to='/' style={LinkStyle}>{`${'\u00A0'}`}Home</Link>
+                                    </li>
+                                    <li key='global' style={MenuItemStyle}>
+                                        <GlobalOutlined /><Link to='/global' style={LinkStyle}>{`${'\u00A0'}`}Global</Link>
+                                    </li>
+                                    <li key='detail' style={MenuItemStyle}>
+                                        <EnvironmentOutlined /><Link to='/country/:countryId' style={LinkStyle}>{`${'\u00A0'}`}Detail</Link>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
+                            <div className='header__main-menu-responsive'>
+                                <Button onClick={showDrawer} icon={<MenuOutlined />}/>
+                                    <Drawer
+                                        placement="left"
+                                        closable={false}
+                                        onClose={onClose}
+                                        visible={visible}
+                                        drawerStyle={{backgroundColor:'#018475'}}
+                                    >
+                                        <Menu mode='inline' style={MenuStyle}>
+                                            <Menu.Item key='home' icon={<ReadOutlined />} style={MenuItemStyle}>
+                                                <Link to='/' style={LinkStyle}>Home</Link></Menu.Item>
+                                            <Menu.Item key='global' icon={<GlobalOutlined />} style={MenuItemStyle}>
+                                                <Link to='/global' style={LinkStyle}>Global</Link></Menu.Item>
+                                            <Menu.Item key='detail' icon={<EnvironmentOutlined />} style={MenuItemStyle}>
+                                                <Link to='/country/:countryId' style={LinkStyle}>Detail</Link></Menu.Item>
+                                        </Menu>
+                                    </Drawer>
+                                </div>
+                            </div>
                         <div className='header__user-menu'>
                             { isUserLogin ? 
                             (<UserInfo/>)

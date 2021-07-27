@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Row, Col, Typography, Button, DatePicker } from 'antd';
+import { Row, Col, Typography, Button, DatePicker, Popover } from 'antd';
 import { getAllCovidData } from '../../../../services/covidAPI/CovidAPI'
 import { handleChangeData } from '../../../../unity/Unity'
 import moment from "moment";
@@ -84,6 +84,10 @@ export default function LineChart() {
         }
     }
 
+    const content = (
+        <RangePicker onChange={handleSelectedTime}/>
+      );
+
     return (
         <Row style={{height:'1000px', padding:'30px 0'}}>
               
@@ -96,7 +100,11 @@ export default function LineChart() {
                 <Button type='text' onClick={() => setReportType('all') }>All</Button>
                 <Button type='text' onClick={() => setReportType('30')}>30 Days</Button>
                 <Button type='text' onClick={() => setReportType('7')}>7 Dyas</Button>
-                <RangePicker onChange={handleSelectedTime}/>
+                <Popover content={content} trigger="click" title='Selecting Day' placement='bottom'>
+                    <Button type='text'>
+                        Choosing duration
+                    </Button>
+                </Popover>
             </Col>
             <Col xs={24} sm={24} md={{span:20, offset:2}} lg={{span:20, offset:2}} >
                 <Title level={4}>Cases</Title>
