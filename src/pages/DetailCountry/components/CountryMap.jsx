@@ -41,7 +41,7 @@ export default function CountryMap({data}) {
     }
 
     return (
-        <div style={{height:'100%', margin:'40px 10px 0'}}>
+        <div style={{height:'100%', margin:'40px 10px 0', overflow:'hidden'}}>
             <MapContainer style={{height:'100%'}} zoom={2} center={[lat, long]}>
                 <ChangeView center={[lat, long]} zoom={5}/>
                 <GeoJSON data={CountriesMap.features} />
