@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Select, Row, Col, Spin} from 'antd'
-import Header from '../../components/Header/Header'
 import { getCountriesData } from '../../services/covidAPI/CovidAPI'
-import { GlobalActions, GlobalReducer } from '../../redux/slices/slicesDetails/GlobalSlices'
+import { GlobalActions } from '../../redux/slices/slicesDetails/GlobalSlices'
 import { useSelector, useDispatch} from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getCountryDetailCovidData, 

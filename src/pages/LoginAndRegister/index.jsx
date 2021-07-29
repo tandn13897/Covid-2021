@@ -4,7 +4,6 @@ import {Row, Col, Tabs} from 'antd'
 import './login.css'
 import Login from './Login'
 import Register from './Register'
-import Footer from '../../components/Footer/Footer'
 
 const { TabPane } = Tabs;
 
@@ -40,7 +39,6 @@ export default function LoginAndRegisterForm() {
                     </section>
                 </Col>
             </Row>
-            <Footer/>
         </div>
     )
 }
