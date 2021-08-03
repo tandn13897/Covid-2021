@@ -11,11 +11,25 @@ export default function GlobalLoading({children}) {
             <Spin 
                 spinning={isLoading} 
                 tip='Loading...' size='large'
-                style={{maxHeight:'100vh'}}
+                style={loadingStyle}
                 indicator={<SyncOutlined spin/>}
             >
                {children}
            </Spin>
         </div>
     )
+}
+
+const loadingStyle = {
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    zIndex:'2',
+    maxHeight:'none',
+    width:'100vw',
+    position:'fixed',
+    top:'0',
+    left:'0',
+    backgroundColor:'rgba(0,0,0,0.2)',
+    height:'100vh'
 }

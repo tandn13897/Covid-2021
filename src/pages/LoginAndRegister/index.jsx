@@ -26,6 +26,7 @@ export default function LoginAndRegisterForm() {
                                 marginLeft:10,
                                 marginRight:10,
                             }}
+                            de
                         >
                             <TabPane tab="Login" key="login-form">
                                 <Login/>

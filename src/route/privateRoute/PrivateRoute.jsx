@@ -1,25 +1,30 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Redirect, Route} from 'react-router-dom'
+import { useSelector, useDispatch} from 'react-redux'
+import { GlobalActions, GlobalReducer} from '../../redux/slices/slicesDetails/GlobalSlices'
 
 function PrivateRoute({component: Component, ...rest}) {
 
-   const checkUser = () => {
-       const username = localStorage.getItem('user')
-       const password = localStorage.getItem('password')
-       if (username === 'admin' && password === '123') return true;
-       return false
-   };
+    const isUserLogin = useSelector(state => state.GlobalReducer.isLogin)
+    const dispacth = useDispatch()
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) return dispacth(GlobalActions.getUserLogin(true));
+        return dispacth(GlobalActions.getUserLogin(false))
+    })
+
 
    return (
        <div>
            <Route
                 {...rest}
                 render={(props) => 
-                checkUser() ? (
+                isUserLogin ? (
                     <Component {...props}/>
                 ): (
                     <Redirect
-                    to={ {pathname: '/login'}}/>
+                    to={ {pathname: '/login', state: {from: props.location}}}/>
                 )} 
            />
        </div>

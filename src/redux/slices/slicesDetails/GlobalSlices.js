@@ -3,8 +3,10 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
     username: '',
     password: '', 
-    error: '',
-    isLoading: false, 
+    isLoading: false,
+    countryId: '',
+    isLogin:'', 
+    error:''
 }
 
 const globalSlice = createSlice({
@@ -17,12 +19,18 @@ const globalSlice = createSlice({
         getUserPassword (state, action) {
             state.password = action.payload
         },
-        getError (state, action) {
-            state.error = action.payload
-        },
         toggleLoading (state, action) {
             state.isLoading = action.payload
         },
+        getCountryId (state, action) {
+            state.countryId = action.payload
+        },
+        getUserLogin (state, action) {
+            state.isLogin = action.payload
+        },
+        getError (state, action) {
+            state.error = action.payload
+        }
     } 
 })
 
