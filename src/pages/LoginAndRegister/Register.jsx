@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { Button, Radio, Modal } from 'antd'
 import PropTypes from 'prop-types';
 import InputField from '../../components/InputField'
 import { Formik, Form, FastField } from 'formik'
 import { useSelector ,useDispatch } from 'react-redux'
 import { GlobalActions } from '../../redux/slices/RootAction'
+import { AccountAction } from '../../redux/slices/slicesDetails/AccountsSlice'
 import { useHistory } from 'react-router'
 import * as Yup from 'yup'
-import axios from 'axios'
 
 import './login.css'
 
@@ -19,15 +19,8 @@ Register.defaultProps = {
     onSubmit: null,
 }
 
-// function success() {
-//     Modal.success({
-//         content: 'Register Success',
-//         afterClose: {}
-//     });
-// }
-
 export default function Register() {
-    const [accounts, setAccounts] = useState([])
+    const accounts = useSelector(state => state.AccountReducer.accountList)
     const error = useSelector(state => state.GlobalReducer.error)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -61,35 +54,24 @@ export default function Register() {
         dispatch(GlobalActions.getUserPassword(password))
         localStorage.setItem('token', username)
         dispatch(GlobalActions.getUserLogin(true))
-        history.push('/')
+        setTimeout(history.push('/'), 2000)
     }
 
     const handleSubmit = (values) => {
         const element = accounts.findIndex(
-            (account) => account.username === values.username && account.email === values.email
+            (account) => account.username === values.username || account.email === values.email
         )
-        if ( element > 0) {
+        if ( element >= 0) {
             return dispatch(GlobalActions.getError('Account or email already exists'))
         } else {
-            axios({
-                method: 'post',
-                url: 'http://localhost:3000/accounts',
-                data: values
-            })
+            dispatch(AccountAction.addNewAccounts(values))
+            console.log(accounts)
             Modal.success({
                 content: 'Register Success',
                 onOk:handleLogIn(values.username, values.password)
-            });
-        }
+                });
+            }
     }
-
-    useEffect(() => {
-        axios.get('http://localhost:3000/accounts')
-            .then(res => {
-                setAccounts(res.data)
-            })  
-            .catch(err => alert(err))
-    })
 
     return (
         <div className='register__container'>

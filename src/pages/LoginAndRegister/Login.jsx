@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { Button } from 'antd'
 import { useHistory } from 'react-router'
 import { useSelector ,useDispatch } from 'react-redux'
@@ -8,8 +8,6 @@ import PropTypes from 'prop-types';
 import InputField from '../../components/InputField'
 import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import axios from 'axios'
-
 
 import { GlobalActions } from '../../redux/slices/RootAction'
 import './login.css'
@@ -23,7 +21,7 @@ LoginForm.defaultProps = {
 }
 
 export default function LoginForm() {
-    const [accounts, setAccounts] = useState([])
+    const accounts = useSelector(state => state.AccountReducer.accountList)
     const error = useSelector(state => state.GlobalReducer.error)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -53,14 +51,6 @@ export default function LoginForm() {
             dispatch(GlobalActions.getError('Account or password incorrect'))
         }
     }
-
-    useEffect(() => {
-        axios.get('http://localhost:3000/accounts')
-            .then(res => {
-                setAccounts(res.data)
-            })  
-            .catch(err => alert(err))
-    })
     
     return (
         <div className='login__container'>
